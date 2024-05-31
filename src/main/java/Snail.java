@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Snail {
 
     /**
@@ -26,7 +28,77 @@ public class Snail {
      *         returns an empty array if array2d is not square.
      */
     public static int[] flattenSnail(int[][] array2d) {
-        return null;
+
+        if(array2d == null){
+
+            return new int[0];
+
+        }
+
+        if (!isPerfectSquare(array2d)) {
+            return new int[0];
+        }
+
+        int n = array2d.length;
+        int[] result = new int[n * n];
+
+        int index = 0;
+
+        // declare boundaries
+
+        int top = 0; // top: index 0 (first index of each 1d array)
+        int bottom = n - 1; // bottom: index 4 (index of last 1d array)
+        int right = n - 1; // right: index 4 (last index of each 1d array)
+        int left = 0; // left: (index of first 1d array)
+
+        while(top <= bottom && left <= right){
+
+            // pattern: right, down, left, up
+
+            // going right across top (change row value ++)
+
+            for(int i = left; i <= right; i++){
+
+                result[index++] = array2d[top][i];
+
+            }
+            top++; // top borders close by 1 index
+
+            // going down across right (change column value ++)
+
+            for(int i = top; i <= bottom; i++){
+
+                result[index++] = array2d[i][right];
+
+            }
+            right--;
+
+            // going left across bottom (change row value --)
+
+            if(top <= bottom) {
+                for (int i = right; i >= left; i--) {
+
+                    result[index++] = array2d[bottom][i];
+
+                }
+                bottom--;
+            }
+
+            // going up across left (change column value --)
+
+            if(left <= right) {
+                for (int i = bottom; i >= top; i--) {
+
+                    result[index++] = array2d[i][left];
+
+                }
+
+                left++;
+            }
+
+        }
+
+        return result;
     }
 
     /**
@@ -58,7 +130,81 @@ public class Snail {
      *         returns an empty 2d array if the length of array1d is not a perfect square.
      */
     public static int[][] makeSnail(int[] array1d) {
-        return null;
+
+        if(array1d == null){
+
+            return new int[0][0];
+
+        }
+
+        if(!isPerfectSquare(array1d)){
+
+            return new int[0][0];
+
+        }
+
+        int n = (int) Math.sqrt(array1d.length);
+        int[][] result = new int[n][n];
+        int index = 0;
+
+        // declare boundaries
+
+        int top = 0; // top: index 0 (first index of each 1d array)
+        int bottom = n - 1; // bottom: index 4 (index of last 1d array)
+        int right = n - 1; // right: index 4 (last index of each 1d array)
+        int left = 0; // left: (index of first 1d array)
+
+        while(top <= bottom && left <= right){
+
+            // pattern: right, down, left, up
+
+            // going right across top (change row value ++)
+
+            for(int i = left; i <= right; i++){
+
+                result[top][i] = array1d[index++];
+                // result[index++] = array2d[top][i];
+
+            }
+            top++; // top borders close by 1 index
+
+            // going down across right (change column value ++)
+
+            for(int i = top; i <= bottom; i++){
+
+                result[i][right] = array1d[index++];
+
+            }
+            right--;
+
+            // going left across bottom (change row value --)
+
+            if (top <= bottom) {
+                for (int i = right; i >= left; i--) {
+
+                    result[bottom][i] = array1d[index++];
+
+                }
+                bottom--;
+            }
+
+            // going up across left (change column value --)
+
+            if(left <= right){
+
+                for(int i = bottom; i >= top; i--){
+
+                    result[i][left] = array1d[index++];
+
+                }
+
+                left++;
+
+            }
+        }
+
+        return result;
+
     }
 
     /**
@@ -71,6 +217,10 @@ public class Snail {
      * @param array1d
      */
     private static void print1dArray(int[] array1d) {
+
+        for(int i: array1d){
+            System.out.println(i);
+        }
 
     }
 
@@ -85,6 +235,14 @@ public class Snail {
      */
     private static void print2dArray(int[][] array2d) {
 
+        for(int[] oneD: array2d){
+
+            for(int a: oneD){
+
+                System.out.println(a);
+
+            }
+        }
     }
 
     /**
@@ -97,6 +255,15 @@ public class Snail {
      * @return
      */
     private static boolean isPerfectSquare(int[] array1d) {
+
+        double sqrt = Math.sqrt(array1d.length);
+
+        if (sqrt - Math.floor(sqrt) == 0) {
+
+            return true;
+
+        }
+
         return false;
     }
 
@@ -111,7 +278,20 @@ public class Snail {
      * @return
      */
     private static boolean isPerfectSquare(int[][] array2d) {
-        return false;
+
+        int i = array2d.length;
+
+        for(int[] oneD: array2d){
+
+            if(oneD.length != i){
+
+                return false;
+
+            }
+
+        }
+
+        return true;
     }
 
 
